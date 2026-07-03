@@ -27,7 +27,7 @@ export default function ProyekDetail() {
   const pc = co(P0.co)
   const pst = stt(P0.status)
   const margin = P0.masuk - P0.keluar
-  const marginPct = Math.round((margin / P0.masuk) * 100) + '%'
+  const marginPct = (P0.masuk > 0 ? Math.round((margin / P0.masuk) * 100) : 0) + '%'
   const sos = soFor(P0.id)
   const allSODone = sos.every((so) => so.status === 'Selesai')
 
@@ -50,8 +50,10 @@ export default function ProyekDetail() {
     { label: 'Cash Out (realisasi)', v: P0.keluar, color: '#D97706', w: Math.round((P0.keluar / P0.nilai) * 100) },
   ]
 
-  const pdInvoices = inv.filter((i) => i.co === P0.co)
-  const pdPayments = pay.filter((p) => p.co === P0.co)
+  // Invoices belonging to THIS project (matched by project name), and the
+  // payments that settle those specific invoices.
+  const pdInvoices = inv.filter((i) => i.proj === P0.name)
+  const pdPayments = pay.filter((p) => pdInvoices.some((i) => i.no === p.inv))
 
   const tab = state.proyekTab
 

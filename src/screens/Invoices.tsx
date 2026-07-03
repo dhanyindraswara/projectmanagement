@@ -13,15 +13,15 @@ export default function Invoices() {
   const { state } = useApp()
   const [query, setQuery] = useState('')
 
-  // Summary is across all invoices (matches the prototype's totals).
-  const summary = useMemo(
-    () => ({
-      total: fmtC(inv.reduce((a, b) => a + b.nilai, 0)),
-      dibayar: fmtC(inv.filter((i) => i.status === 'Dibayar').reduce((a, b) => a + b.nilai, 0)),
-      outstanding: fmtC(inv.filter((i) => i.status !== 'Dibayar').reduce((a, b) => a + b.nilai, 0)),
-    }),
-    [],
-  )
+  // Summary reflects the active company filter (search only narrows the table).
+  const summary = useMemo(() => {
+    const scoped = inv.filter((i) => state.company === 'all' || i.co === state.company)
+    return {
+      total: fmtC(scoped.reduce((a, b) => a + b.nilai, 0)),
+      dibayar: fmtC(scoped.filter((i) => i.status === 'Dibayar').reduce((a, b) => a + b.nilai, 0)),
+      outstanding: fmtC(scoped.filter((i) => i.status !== 'Dibayar').reduce((a, b) => a + b.nilai, 0)),
+    }
+  }, [state.company])
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase()
