@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - claude/projectmanagement-repo-push-2w3mnj
   workflow_dispatch:
 
 # Allow this workflow to publish to GitHub Pages
