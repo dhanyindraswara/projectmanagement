@@ -3,7 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      # The github-pages environment only permits deploys from the repo's
+      # default branch. This repo's default is currently the branch below;
+      # change this to `main` after making main the default branch.
+      - claude/projectmanagement-repo-push-2w3mnj
   workflow_dispatch:
 
 # Allow this workflow to publish to GitHub Pages
